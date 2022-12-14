@@ -1,0 +1,197 @@
+ 
+1. Basic 4 Queries
+For the ERD on the left, how would you:
+1. Get all users whose age is greater than 35?
+SELECT * FROM users
+WHERE age >= 35
+
+2. Insert a new user whose first name is ‘Jonathan’ and last name is ‘Smith’?  Have created_at be the current time.
+
+
+
+3. Delete all users whose user records were created after August 1st 2010?
+
+DELETE * FROM users 
+WHERE users.created_at= 
+
+4. Update user record (id: 3) so that first_name is ‘Coding’ and last name ‘Dojo’.  Also update it so that the age is set as 7.  Have updated_at automatically update to the current time.
+
+Once you do the four queries above, please check with at least one or two other groups before working on the following assignments.
+
+2. MySQL Countries
+1. What query would you run to get all the countries that speak Slovene? Your query should return the name of the country, language and language percentage. Your query should arrange the result by language percentage in descending order. (1)
+
+-- SELECT countries.name AS country, COUNT(cities.id) AS number_cities
+-- FROM countries
+-- JOIN cities ON countries.code = cities.country_code
+-- GROUP BY countries.code
+-- ORDER BY COUNT(cities.id) desc
+
+2. What query would you run to display the total number of cities for each country? Your query should return the name of the country and the total number of cities. Your query should arrange the result by the number of cities in descending order. (3)
+
+-- SELECT cities.name, cities.population 
+-- FROM cities 
+-- JOIN countries ON cities.country_id = countries.id
+-- WHERE countries.name = 'Mexico' and cities.population > 500000
+-- ORDER BY cities.population desc
+
+3. What query would you run to get all the cities in Mexico with a population of greater than 500,000? Your query should arrange the result by population in descending order. (1)
+
+-- SELECT cities.name, cities.population 
+-- FROM cities 
+-- JOIN countries ON cities.country_id = countries.id
+-- WHERE countries.name = 'Mexico' and cities.population > 500000
+-- ORDER BY cities.population desc
+
+4. What query would you run to get all languages in each country with a percentage greater than 89%? Your query should arrange the result by percentage in descending order. (1)
+
+-- SELECT countries.name, languages.percentage 
+-- FROM countries
+-- JOIN languages ON countries.code = languages.country_code 
+-- WHERE languages.percentage > 89
+-- ORDER BY languages.percentage desc
+
+5. What query would you run to get all the countries with Surface Area below 501 and Population greater than 100,000? (2)
+
+-- SELECT name, surface_area, population 
+-- FROM countries 
+-- WHERE surface_area < 501 and population > 100000
+
+6. What query would you run to get countries with only Constitutional Monarchy with a capital greater than 200 and a life expectancy greater than 75 years? (1)
+
+-- SELECT name, government_form, capital, life_expectancy
+-- FROM countries 
+-- WHERE government_form = 'Constitutional Monarchy' and capital > 200 and life_expectancy > 75
+
+7. What query would you run to get all the cities of Argentina inside the Buenos Aires district and have the population greater than 500, 000? The query should return the Country Name, City Name, District and Population. (2)
+
+-- SELECT countries.name AS country_name, cities.name AS city_name, cities.district, cities.population 
+-- FROM cities 
+-- JOIN countries ON cities.country_id = countries.id 
+-- WHERE countries.name = 'Argentina' and cities.district = 'Buenos Aires' and cities.population > 500000
+
+
+8. What query would you run to summarize the number of countries in each region? The query should display the name of the region and the number of countries. Also, the query should arrange the result by the number of countries in descending order. (2)
+
+-- SELECT region, COUNT(id) AS number_countries
+-- FROM countries
+-- GROUP BY region 
+-- ORDER BY COUNT(id) desc
+
+3. Sakila SQL query assignment
+-- 1. What query would you run to get all the customers inside city_id = 312? 
+-- Your query should return customer first name, last name, email, and address.
+
+-- SELECT customer.first_name AS first_name, customer.last_name AS last_name, customer.email, address.address
+-- FROM customer 
+-- JOIN address ON customer.address_id = address.address_id 
+-- WHERE address.city_id = 312
+
+-- 2. What query would you run to get all comedy films? 
+-- Your query should return film title, description, release year, rating, special features, and genre.
+
+-- SELECT film.title, film.description, film.release_year, film.rating, film.special_features, category.name AS genre
+-- FROM film 
+-- JOIN film_category ON film.film_id = film_category.film_id
+-- JOIN category ON film_category.category_id = category.category_id 
+-- WHERE category.name = 'Comedy'
+-- 
+
+-- 3. What query would you run to get all the films joined by actor_id=5? 
+-- Your query should return the film title, description, and release year.
+
+-- SELECT film.title, film.description, film.release_year
+-- FROM film 
+-- JOIN film_actor ON film.film_id = film_actor.film_id 
+-- WHERE film_actor.actor_id = 5
+
+
+-- 4. What query would you run to get all the customers in store_id = 1 and 
+-- inside these cities (1, 42, 312 and 459)? Your query should return 
+-- customer first name, last name, email, and address.
+
+-- SELECT customer.first_name, customer.last_name, customer.email, address.address, city.city_id, store.store_id
+-- FROM customer
+-- JOIN store ON customer.store_id = store.store_id 
+-- JOIN address ON customer.address_id = address.address_id 
+-- JOIN city ON address.city_id = city.city_id
+-- WHERE store.store_id = 1 AND city.city_id IN (1, 42, 312, 459)
+
+-- 5. What query would you run to get all the films with a "rating = G" and 
+-- "special feature = behind the scenes", joined by actor_id = 15? 
+-- Your query should return the film title, description, release year, rate, 
+-- and special feature. Hint: You may use LIKE function in getting the 'behind the scenes' part.
+
+-- SELECT film.title, film.description, film.release_year, film.rating, film.special_features
+-- FROM film
+-- WHERE film.rating = "G" AND film.special_features LIKE 'behind the scenes'
+
+-- 6. What query would you run to get all the actors that joined in the film_id = 369? 
+-- Your query should return the film_id, title, actor_id, and actor_name.
+
+-- SELECT film.film_id, film.title, actor.actor_id, actor.first_name, actor.last_name 
+-- FROM film 
+-- JOIN film_actor ON film.film_id = film_actor.film_id 
+-- JOIN actor ON film_actor.actor_id = actor.actor_id 
+-- WHERE film.film_id = 369
+-- 
+
+-- 7. What query would you run to get all drama films with a rental rate of 2.99? 
+-- Your query should return film title, description, release year, rating, special features, and genre.
+
+-- SELECT film.title, film.description, film.release_year, film.rating, film.special_features, category.name AS genre, film.rental_rate
+-- FROM film 
+-- JOIN film_category ON film.film_id = film_category.film_id 
+-- JOIN category ON film_category.category_id = category.category_id 
+-- WHERE film.rental_rate = 2.99 AND category.name = 'Drama'
+
+
+-- 8. What query would you run to get all the action films which are joined by SANDRA KILMER? 
+-- Your query should return film title, description, release year, rating, special features, 
+-- genre, and actor's first name and last name.
+
+-- SELECT film.title, film.description, film.release_year, film.rating, film.special_features, category.name AS genre, actor.first_name, actor.last_name 
+-- FROM film 
+-- JOIN film_category ON film.film_id = film_category.film_id 
+-- JOIN category ON film_category.category_id = category.category_id 
+-- JOIN film_actor ON film.film_id = film_actor.film_id 
+-- JOIN actor ON film_actor.actor_id = actor.actor_id
+-- WHERE category.name = 'Action' AND actor.first_name = 'SANDRA' AND actor.last_name = 'KILMER'
+
+
+4. Lead Gen Business
+1. What query would you run to get the total revenue for March of 2012?
+
+
+2. What query would you run to get total revenue collected from the client with an id of 2?
+
+
+
+3. What query would you run to get all the sites that client=10 owns?
+
+
+
+4. What query would you run to get total # of sites created per month per year for the client with an id of 1? What about for client=20?
+
+
+5. What query would you run to get the total # of leads generated for each of the sites between January 1, 2011 to February 15, 2011?
+
+
+
+6. What query would you run to get a list of client names and the total # of leads we've generated for each of our clients between January 1, 2011 to December 31, 2011?
+
+
+
+7. What query would you run to get a list of client names and the total # of leads we've generated for each client each month between months 1 - 6 of Year 2011?
+
+
+
+8. What query would you run to get a list of client names and the total # of leads we've generated for each of our clients' sites between January 1, 2011 to December 31, 2011? Order this query by client id.  Come up with a second query that shows all the clients, the site name(s), and the total number of leads generated from each site for all time.
+
+
+
+9. Write a single query that retrieves total revenue collected from each client for each month of the year. Order it by client id.
+
+
+
+10. Write a single query that retrieves all the sites that each client owns. Group the results so that each row shows a new client. It will become clearer when you add a new field called 'sites' that has all the sites that the client owns. (HINT: use GROUP_CONCAT)
